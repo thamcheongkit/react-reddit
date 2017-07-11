@@ -20,6 +20,9 @@
     "react-tap-event-plugin": "^2.0.1",
     "react-visibility-sensor": "^3.10.0"
   },
+  "engines": {
+    "node": "4.6.1"
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build && react-snapshot",
