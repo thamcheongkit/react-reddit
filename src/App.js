@@ -8,8 +8,8 @@ let cache = {}
 export default class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {data: JSON.parse(window.sessionStorage.getItem(this.props.location.pathname)) || []};
-    // this.state = {data: []};
+    // this.state = {data: JSON.parse(window.sessionStorage.getItem(this.props.location.pathname)) || []};
+    this.state = {data: []};
     // this.state = {data: cache[this.props.location.pathname] || []};
     this.componentDidMount = this.componentDidMount.bind(this);
     this.componentDidUpdate = this.componentDidUpdate.bind(this);
@@ -19,7 +19,7 @@ export default class App extends React.Component {
   componentDidMount() {
     RedditAPI.fetchRedditJson(data=>{
       this.setState({data: data, isDone: true});
-      window.sessionStorage.setItem(this.props.location.pathname, JSON.stringify(data));
+      // window.sessionStorage.setItem(this.props.location.pathname, JSON.stringify(data));
       // cache[this.props.location.pathnam]  = data;
     }, this.props.location.pathname);
   }
