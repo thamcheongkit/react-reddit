@@ -1,5 +1,5 @@
 {
-  "name": "react-test",
+  "name": "react-reddit",
   "version": "0.1.0",
   "private": true,
   "proxy": "https://www.reddit.com/",
@@ -21,7 +21,8 @@
     "react-visibility-sensor": "^3.10.0"
   },
   "engines": {
-    "node": "4.6.1"
+    "node": "6.3.0",
+    "npm": "4.6.1"
   },
   "scripts": {
     "start": "react-scripts start",
