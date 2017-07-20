@@ -1,0 +1,16 @@
+{
+  "hosting": {
+    "public": "build",
+    "redirects": [ {
+      "source" : "/v1/*",
+      "destination" : "https://www.reddit.com/",
+      "type" : 302
+    } ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}
