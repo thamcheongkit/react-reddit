@@ -10,19 +10,40 @@ import VisibilitySensor from 'react-visibility-sensor';
 import IconButton from 'material-ui/IconButton';
 import ActionHome from 'material-ui/svg-icons/action/home';
 import ActionDone from 'material-ui/svg-icons/action/done';
+import Drawer from 'material-ui/Drawer';
+import MenuItem from 'material-ui/MenuItem';
+import {Link, NavLink} from 'react-router-dom';
 
 injectTapEventPlugin(); // CK: material-ui dependency
+
+const default_subreddits = ["/r/announcements/","/r/Art/","/r/AskReddit/","/r/askscience/","/r/aww/","/r/blog/","/r/books/","/r/creepy/","/r/dataisbeautiful/","/r/DIY/","/r/Documentaries/","/r/EarthPorn/","/r/explainlikeimfive/","/r/food/","/r/funny/","/r/Futurology/","/r/gadgets/","/r/gaming/","/r/GetMotivated/","/r/gifs/","/r/history/","/r/IAmA/","/r/InternetIsBeautiful/","/r/Jokes/","/r/LifeProTips/","/r/listentothis/","/r/mildlyinteresting/","/r/movies/","/r/Music/","/r/news/","/r/nosleep/","/r/nottheonion/","/r/OldSchoolCool/","/r/personalfinance/","/r/philosophy/","/r/photoshopbattles/","/r/pics/","/r/science/","/r/Showerthoughts/","/r/space/","/r/sports/","/r/television/","/r/tifu/","/r/todayilearned/","/r/UpliftingNews/","/r/videos/","/r/worldnews/","/r/TwoXChromosomes","/r/writingprompts"];
 
 class RedditUI extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {open: false};
+    this.toggleOpen = this.toggleOpen.bind(this);
+  }
+
+  toggleOpen(e) {
+    this.setState({open: !this.state.open});
   }
 
   render() {
     return (
       <div>
-        <AppBar title={this.props.location.pathname} iconElementRight={this.props.isDone && <IconButton><ActionDone/></IconButton>}/>
+        <AppBar
+          onLeftIconButtonTouchTap={this.toggleOpen}
+          title={this.props.location.pathname}
+          iconElementRight={this.props.isDone && <IconButton><ActionDone/></IconButton>}/>
         <RedditCards data={this.props.data} />
+        <Drawer open={this.state.open} docked={false} onRequestChange={open=>this.setState({open})}>
+          {default_subreddits.map(item=>(
+            <MenuItem key={item}>
+              <NavLink to={item}><div style={{fontWeight: '16px', textDecoration: 'none', color: 'rgba(0, 0, 0, 0.87)'}}>{item}</div></NavLink>
+            </MenuItem>)
+          )}
+        </Drawer>
       </div>
     )
   }
@@ -98,10 +119,12 @@ class Media extends React.Component {
           </VisibilitySensor>
         </div>
       )
-    } else {
+    } else if (this.props.url.endsWith('.jpg')) {
       return (
         <img src={this.props.url} alt="" />
       )
+    } else {
+      return null;
     }
   }
 }
