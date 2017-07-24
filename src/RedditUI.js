@@ -40,7 +40,7 @@ class RedditUI extends React.Component {
         <Drawer open={this.state.open} docked={false} onRequestChange={open=>this.setState({open})}>
           {default_subreddits.map(item=>(
             <MenuItem key={item}>
-              <NavLink to={item}><div style={{fontWeight: '16px', textDecoration: 'none', color: 'rgba(0, 0, 0, 0.87)'}}>{item}</div></NavLink>
+              <Link to={item}><div style={{fontWeight: '16px', textDecoration: 'none', color: 'rgba(0, 0, 0, 0.87)'}}>{item}</div></Link>
             </MenuItem>)
           )}
         </Drawer>
