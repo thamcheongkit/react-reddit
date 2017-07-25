@@ -124,51 +124,29 @@ export default class RedditAPI {
 
 
   static fetchRedditCommentsJson = (callback, url='', query='') => {
-    const BASEURL = 'https://oauth.reddit.com';
-    const URL = BASEURL + url + query;
+    const URL = 'https://www.reddit.com/api/v1/access_token?grant_type=refresh_token&refresh_token=42374333--V_gvWqk0cOOr5ol4GJ6F9elgv8';
     fetch(URL, {
+      method: "POST",
       headers: {
-        "Authorization": "bearer qMEORWAdLsDJTsUCcVGmEhxf9No"
+        "Authorization": "Basic WThoRW5IczdzOEIwc3c6"
       },
       accept: 'application/json'
     })
     .then(resp=>resp.json())
-    .then(json=>{
-      if (json.error) {
-        throw new Error();
-      } else {
-        return json;
-      }
-    })
-    .then(data=>data.data.children)
-    .then(lines=>lines.map(line=>line.data))
-    .then(data=>callback(data))
-    .catch(err=>{
-      // refresh access token
-      const URL = 'https://www.reddit.com/api/v1/access_token?grant_type=refresh_token&refresh_token=42374333--V_gvWqk0cOOr5ol4GJ6F9elgv8';
+    .then(data=>{
+      const access_token = data["access_token"];
+      const BASEURL = 'https://oauth.reddit.com';
+      const URL = BASEURL + url + query;
       fetch(URL, {
-        method: "POST",
         headers: {
-          "Authorization": "Basic WThoRW5IczdzOEIwc3c6"
+          "Authorization": "bearer " + access_token
         },
         accept: 'application/json'
       })
       .then(resp=>resp.json())
-      .then(data=>{
-        const access_token = data["access_token"];
-        const BASEURL = 'https://oauth.reddit.com';
-        const URL = BASEURL + url + query;
-        fetch(URL, {
-          headers: {
-            "Authorization": "bearer " + access_token
-          },
-          accept: 'application/json'
-        })
-        .then(resp=>resp.json())
-        .then(data=>data[1].data.children)
-        .then(lines=>lines.map(line=>line.data))
-        .then(data=>callback(data))
-      })
+      .then(data=>data[1].data.children)
+      .then(lines=>lines.map(line=>line.data))
+      .then(data=>callback(data))
     })
   }
 
