@@ -19,7 +19,7 @@ const UI = (props) => (
         )
       )}
       {props.data.length>0 && 
-        <NavLink style={styles.header} to={ `${props.location.pathname}?count=25&after=${props.data[props.data.length-1].name}` }>next</NavLink>
+        <Link style={styles.header} to={ `${props.location.pathname}?count=25&after=${props.data[props.data.length-1].name}` }>next</Link>
       }
     </div>
   </div>
@@ -31,7 +31,7 @@ const Subtitle = ({data}) => (
     {/* <span>{` | ${data.num_comments} comments`}</span> */}
     <span> | <a style={styles.link} href={data.permalink}>{`${data.num_comments} comments`}</a></span>
     <span>{` | ${data.score} point`}</span>
-    <Toggle style={styles.link} url={data.url}/>
+     <Toggle style={styles.link} url={data.url}/> 
   </div>
 )
 

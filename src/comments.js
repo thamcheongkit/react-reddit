@@ -1,10 +1,11 @@
 import React from 'react';
 import {Link, NavLink} from 'react-router-dom';
-
 import RedditAPI from './reddit_api';
+
 // import RedditUIRoot from './RedditUI';
 
-let {cache} = require('./cache');
+const NodeCache = require( "node-cache" );
+const cache = new NodeCache();
 
 // var cache = require('memory-cache');
 
