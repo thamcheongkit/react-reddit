@@ -1,11 +1,17 @@
 import React from 'react';
 import {Link, NavLink} from 'react-router-dom';
+import dropdown from './dropdown.svg';
+import Transition from 'react-transition-group/Transition';
 
 // import styles from './ui.css';
+const DEFAULT_SUBREDDITS = ["r/popular","r/AskReddit","r/gameofthrones","r/The_Donald","r/politics","r/nba","r/pics","r/funny","r/videos","r/soccer","r/movies","r/worldnews","r/gifs","r/todayilearned","r/aww","r/gaming","r/asoiaf","r/news","r/BlackPeopleTwitter","r/SquaredCircle","r/GlobalOffensive","r/IAmA","r/Showerthoughts","r/marvelstudios","r/leagueoflegends","r/mildlyinteresting"];
 
 const UI = (props) => (
   <div>
     <h1 style={styles.header}>{props.location.pathname}</h1>
+    <Dropdown>
+      <Subreddits />
+    </Dropdown>
     <div style={styles.center} >
       {props.data.map(
         (data, i)=>(
@@ -24,6 +30,39 @@ const UI = (props) => (
     </div>
   </div>
 );
+
+class Dropdown extends React.Component {
+  constructor() {
+    super();
+    this.state = {active: false}
+    this.toggle = this.toggle.bind(this);
+  }
+
+  toggle() {
+    this.setState({active: !this.state.active})
+  }
+
+  render() {
+    return (
+      <div onClick={this.toggle}>
+        <a href={"javascript:void(0);"}>
+          <img src={dropdown} style={{textAlign: 'center', height: '0.5em'}}/>
+        </a>
+        <Transition in={this.state.active}>
+          {(state) => (
+            <div style={{...defaultStyle, ...transitionStyles[state]}}>{console.log(state)}{this.props.children}</div>
+          )}
+        </Transition>
+      </div>
+    )
+  }
+}
+
+const Subreddits = () => (
+  <ul style={{listStyle: 'none', ...styles.header, padding: '0'}}>
+    {DEFAULT_SUBREDDITS.map(subreddit=>(<li key={subreddit}><Link to={'/'+subreddit}>{subreddit}</Link></li>))}
+  </ul>
+)
 
 const Subtitle = ({data}) => (
   <div style={styles.subtitle}>
@@ -60,6 +99,23 @@ class Toggle extends React.Component {
     }
   }
 }
+
+const duration = 2000;
+
+const defaultStyle = {
+  transition: `all ${duration}ms ease-in-out`,
+  opacity: 1,
+  maxHeight: '0px',
+  visibility: 'hidden'
+}
+
+const transitionStyles = {
+  exited: { opacity: 0, maxHeight: '0px', visibility: 'hidden' },
+  exiting: { opacity: 0, maxHeight: '0px', visibility: 'hidden' },
+  entering: { opacity: 1, maxHeight: '800px', visibility: 'visible' },
+  // entered:  { opacity: 1, maxHeight: '1000px', visibility: 'visible' },
+};
+
 
 const styles = {
   header: {
