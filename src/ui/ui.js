@@ -19,6 +19,7 @@ const UI = (props) => (
             <span style={styles.numbering}>{i+1}</span>
             <div>
               <div>{data.title}</div>
+              <Selftext data={data} />
               <Subtitle data={data} />
             </div>
           </article>
@@ -63,6 +64,14 @@ const Subreddits = () => (
     {DEFAULT_SUBREDDITS.map(subreddit=>(<li key={subreddit}><Link to={'/'+subreddit}>{subreddit}</Link></li>))}
   </ul>
 )
+
+const Selftext = ({data}) => {
+  if (data.selftext) {
+    return (<div style={styles.subtitle}>{data.selftext}</div>)
+  } else {
+    return null
+  }
+}
 
 const Subtitle = ({data}) => (
   <div style={styles.subtitle}>
@@ -115,7 +124,6 @@ const transitionStyles = {
   entering: { opacity: 1, maxHeight: '800px', visibility: 'visible' },
   // entered:  { opacity: 1, maxHeight: '1000px', visibility: 'visible' },
 };
-
 
 const styles = {
   header: {
