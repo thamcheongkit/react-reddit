@@ -8,7 +8,7 @@ import Comments from '../comments';
 const DEFAULT_SUBREDDITS = ["r/popular","r/AskReddit","r/gameofthrones","r/The_Donald","r/politics","r/nba","r/pics","r/funny","r/videos","r/soccer","r/movies","r/worldnews","r/gifs","r/todayilearned","r/aww","r/gaming","r/asoiaf","r/news","r/BlackPeopleTwitter","r/SquaredCircle","r/GlobalOffensive","r/IAmA","r/Showerthoughts","r/marvelstudios","r/leagueoflegends","r/mildlyinteresting"];
 
 const UI = (props) => (
-  <div>
+  <div style={props.style}>
     <h1 style={styles.header}>{props.location.pathname}</h1>
     <Dropdown>
       <Subreddits />
@@ -164,7 +164,8 @@ const styles = {
   },
   subtitle: {
     color: '#666',
-    fontSize: '0.75em'
+    fontSize: '0.75em',
+    wordBreak: 'break-word'
   },
   link: {
     color: '#666',
