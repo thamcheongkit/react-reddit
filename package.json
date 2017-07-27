@@ -2,11 +2,13 @@
   "name": "react-reddit",
   "version": "0.1.1",
   "private": true,
+  "homepage": "https://thamcheongkit.github.io",
   "devDependencies": {
     "react-scripts": "0.9.0",
     "react-snapshot": "^1.0.4"
   },
   "dependencies": {
+    "gh-pages": "^1.0.0",
     "node-cache": "^4.1.1",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
@@ -18,6 +20,8 @@
     "npm": "4.6.1"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",

@@ -9,8 +9,9 @@ exports.prerender = function () {
 
 const styles = {
   logo: {
-    height: '10em',
+    height: '5em',
     margin: 'auto',
+    animation: 'Logo-spin 4s linear infinite',
   },
   center: {
     textAlign: 'center'
