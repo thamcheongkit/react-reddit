@@ -2,6 +2,7 @@ import React from 'react';
 import {Link, NavLink} from 'react-router-dom';
 import dropdown from './dropdown.svg';
 import Transition from 'react-transition-group/Transition';
+import Comments from '../comments';
 
 // import styles from './ui.css';
 const DEFAULT_SUBREDDITS = ["r/popular","r/AskReddit","r/gameofthrones","r/The_Donald","r/politics","r/nba","r/pics","r/funny","r/videos","r/soccer","r/movies","r/worldnews","r/gifs","r/todayilearned","r/aww","r/gaming","r/asoiaf","r/news","r/BlackPeopleTwitter","r/SquaredCircle","r/GlobalOffensive","r/IAmA","r/Showerthoughts","r/marvelstudios","r/leagueoflegends","r/mildlyinteresting"];
@@ -79,7 +80,22 @@ const Subtitle = ({data}) => (
     {/* <span>{` | ${data.num_comments} comments`}</span> */}
     <span> | <a style={styles.link} href={data.permalink}>{`${data.num_comments} comments`}</a></span>
     <span>{` | ${data.score} point`}</span>
-     <Toggle style={styles.link} url={data.url}/> 
+    <Toggle
+        style={{...styles.link, color: '#E53935'}}
+        url={data.url}
+        hideText={'hide image'}
+        showText={'show image'}
+        renderCondition={data.url.endsWith('.jpg')}>
+      <img src={data.url} alt="" />
+    </Toggle>
+    <span> | <a style={styles.link} href={data.url} target="_blank">link</a></span>
+    <Toggle
+        style={styles.link}
+        hideText={'hide comments'}
+        showText={'show comments'}
+        renderCondition={true}>
+      <Comments location={{pathname: data.permalink}} />
+    </Toggle>
   </div>
 )
 
@@ -95,12 +111,12 @@ class Toggle extends React.Component {
   }
 
   render() {
-    if (this.props.url.endsWith('.jpg')) {
+    if (this.props.renderCondition) {
       return(
         <span>
           <span> | </span>
-          <a style={this.props.style} href="javascript:void(0);" onClick={this.toggle}>{this.state.active ? 'hide image' : 'show image'}</a>
-          {this.state.active && <img src={this.props.url} alt="" />}
+          <a style={this.props.style} href="javascript:void(0);" onClick={this.toggle}>{this.state.active ? this.props.hideText : this.props.showText}</a>
+          {this.state.active && this.props.children}
         </span>
       )
     } else {

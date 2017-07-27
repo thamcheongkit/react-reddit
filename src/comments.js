@@ -212,3 +212,5 @@ const styles = {
     background: 'none',
   }
 }
+
+exports.CommentsRoot = CommentsRoot;
