@@ -26,7 +26,7 @@ const UI = (props) => (
           </article>
         )
       )}
-      {props.data.length>0 && 
+      {props.data.length>0 &&
         <Link style={styles.header} to={ `${props.location.pathname}?count=25&after=${props.data[props.data.length-1].name}` }>next</Link>
       }
     </div>
@@ -85,8 +85,16 @@ const Subtitle = ({data}) => (
         url={data.url}
         hideText={'hide image'}
         showText={'show image'}
-        renderCondition={data.url.endsWith('.jpg')}>
+        renderCondition={data.url.endsWith('.jpg') || data.url.endsWith('.png')}>
       <img src={data.url} alt="" />
+    </Toggle>
+    <Toggle
+        style={{...styles.link, color: '#E53935'}}
+        url={data.url}
+        hideText={'hide gifv'}
+        showText={'show gifv'}
+        renderCondition={data.url.endsWith('.gifv')}>
+      <video autoPlay hideControls loop src={data.url.slice(0,-5)+'.mp4'} />
     </Toggle>
     <span> | <a style={styles.link} href={data.url} target="_blank">link</a></span>
     <Toggle
