@@ -13,8 +13,8 @@ render(
   <Router>
     <div>
       {/* <Route exact path="/" component={App}/> */}
-      {/*<Route exact path="/" render={()=>(<Redirect to="/r/popular" />)} />*/}
-      <Route exact path="/" component={ColumnView} />
+      <Route exact path="/" render={()=>(<Redirect to="/r/popular" />)} />
+      {/* <Route exact path="/" component={ColumnView} /> */}
       <Route exact path="/r/:pathname" component={App}/>
       <Route path="/r/:pathname/comments" component={Comments} />
       {/* <Route path="*" render={_=>(<App />)} /> */}

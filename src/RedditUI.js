@@ -16,7 +16,7 @@ import {Link, NavLink} from 'react-router-dom';
 
 injectTapEventPlugin(); // CK: material-ui dependency
 
-const default_subreddits = ["/r/announcements/","/r/Art/","/r/AskReddit/","/r/askscience/","/r/aww/","/r/blog/","/r/books/","/r/creepy/","/r/dataisbeautiful/","/r/DIY/","/r/Documentaries/","/r/EarthPorn/","/r/explainlikeimfive/","/r/food/","/r/funny/","/r/Futurology/","/r/gadgets/","/r/gaming/","/r/GetMotivated/","/r/gifs/","/r/history/","/r/IAmA/","/r/InternetIsBeautiful/","/r/Jokes/","/r/LifeProTips/","/r/listentothis/","/r/mildlyinteresting/","/r/movies/","/r/Music/","/r/news/","/r/nosleep/","/r/nottheonion/","/r/OldSchoolCool/","/r/personalfinance/","/r/philosophy/","/r/photoshopbattles/","/r/pics/","/r/science/","/r/Showerthoughts/","/r/space/","/r/sports/","/r/television/","/r/tifu/","/r/todayilearned/","/r/UpliftingNews/","/r/videos/","/r/worldnews/","/r/TwoXChromosomes","/r/writingprompts"];
+const default_subreddits = ["/r/announcements/","/r/Art/","/r/AskReddit/","/r/askscience/","/r/aww/","/r/blog/","/r/books/","/r/creepy/","/r/dataisbeautiful/","/r/DIY/","/r/Documentaries/","/r/EarthPorn/","/r/explainlikeimfive/","/r/food/","/r/funny/","/r/Futurology/","/r/gadgets/","/r/gaming/","/r/GetMotivated/","/r/gifs/","/r/history/","/r/IAmA/","/r/InternetIsBeautiful/","/r/Jokes/","/r/LifeProTips/","/r/listentothis/","/r/mildlyinteresting/","/r/movies/","/r/Music/","/r/news/","/r/nosleep/","/r/nottheonion/","/r/OldSchoolCool/","/r/personalfinance/","/r/philosophy/","/r/photoshopbattles/","/r/pics/","/r/science/","/r/Showerthoughts/","/r/space/","/r/sports/","/r/television/","/r/tifu/","/r/todayilearned/","/r/UpliftingNews/","/r/videos/","/r/worldnews/"];
 
 class RedditUI extends React.Component {
   constructor(props) {

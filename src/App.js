@@ -1,12 +1,13 @@
 import React from 'react';
 // import InfiniteScroll from 'react-infinite-scroller';
-import RedditAPI from './reddit_api';
 // import RedditUIRoot from './RedditUI';
 import UI from './ui/ui';
+// import RedditAPI from './reddit_api';
+import RedditAPI2 from './redditAPI2';
 
 // var cache = require('memory-cache');
 
-var API = new RedditAPI();
+// var API = new RedditAPI();
 
 export default class App extends React.Component {
   constructor() {
@@ -15,21 +16,29 @@ export default class App extends React.Component {
   }
 
   componentDidMount() {
-    API.getSubreddit(
-      data=>this.setState({data: data}),
-      this.props.location.pathname, 
-      this.props.location.search
-    )
+    // API.getSubreddit(
+    //   data=>this.setState({data: data}),
+    //   this.props.location.pathname,
+    //   this.props.location.search
+    // )
+
+    RedditAPI2.get(
+      {
+        pathname: this.props.location.pathname,
+        search: this.props.location.search
+      }, data=>this.setState({data: data})
+    );
   }
 
   componentDidUpdate(nextProps) {
     if (this.props.location.pathname !== nextProps.location.pathname ||
         this.props.location.search !== nextProps.location.search) {
-      API.getSubreddit(
-        data=>this.setState({data: data}),
-        this.props.location.pathname, 
-        this.props.location.search
-      )
+      RedditAPI2.get(
+        {
+          pathname: this.props.location.pathname,
+          search: this.props.location.search
+        }, data=>this.setState({data: data})
+      );
     }
   }
 
@@ -76,7 +85,7 @@ export default class App extends React.Component {
 //         {
 //           pathname: nextProps.location.pathname,
 //           search: nextProps.location.search,
-//         }, 
+//         },
 //         // callback from setState
 //         () => {
 //           // RedditAPI.fetchRedditJson(data=>{
@@ -95,7 +104,7 @@ export default class App extends React.Component {
 //               isDone: true,
 //             });
 //           }, nextProps.location.pathname, nextProps.location.search);
-        
+
 //           // cache.get(nextProps.location.pathname, (e,d)=>{
 //           //   if (!e && d) {
 //           //     this.setState({

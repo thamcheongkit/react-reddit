@@ -1,6 +1,7 @@
 import React from 'react';
 import {Link, NavLink} from 'react-router-dom';
-import RedditAPI from './reddit_api';
+// import RedditAPI from './reddit_api';
+import RedditAPI2 from './redditAPI2';
 
 // import RedditUIRoot from './RedditUI';
 
@@ -16,21 +17,29 @@ export default class Comments extends React.Component {
   }
 
   componentDidMount() {
-    RedditAPI.fetchRedditCommentsJson(
-      data=>this.setState({data: data}),
-      this.props.location.pathname, 
-      this.props.location.search
-    )
+    // RedditAPI.fetchRedditCommentsJson(
+    //   data=>this.setState({data: data}),
+    //   this.props.location.pathname,
+    //   this.props.location.search
+    // );
+
+    RedditAPI2.getComment(
+      {
+        pathname: this.props.location.pathname,
+        search: this.props.location.search
+      }, data => this.setState({data: data}),
+    );
   }
 
   componentDidUpdate(nextProps) {
     if (this.props.location.pathname !== nextProps.location.pathname ||
         this.props.location.search !== nextProps.location.search) {
-      RedditAPI.fetchRedditCommentsJson(
-        data=>this.setState({data: data}),
-        this.props.location.pathname, 
-        this.props.location.search
-      )
+      RedditAPI2.getComment(
+        {
+          pathname: this.props.location.pathname,
+          search: this.props.location.search
+        }, data => this.setState({data: data}),
+      );
     }
   }
 
@@ -77,11 +86,11 @@ const Thread = ({data}) => (
 //                       <Subtitle data={data}/>
 //                     </div>
 //                   </div>
-//                   {data.replies && <CommentsUI style={{paddingLeft: '1em'}} location={this.props.location} data={data.replies.data.children.map(line=>line.data)} />}  
+//                   {data.replies && <CommentsUI style={{paddingLeft: '1em'}} location={this.props.location} data={data.replies.data.children.map(line=>line.data)} />}
 //                 </article>
 //               )
 //             )}
-//             {/* {props.data.length>0 && 
+//             {/* {props.data.length>0 &&
 //               <NavLink style={styles.header} to={ `${props.location.pathname}?count=25&after=${props.data[props.data.length-1].name}` }>next</NavLink>
 //             } */}
 //           </div>
@@ -115,7 +124,7 @@ class Commentz extends React.Component {
   render() {
     const {data} = this.props;
     const props = this.props;
-    console.log(data);
+    // console.log(data);
 
     if (this.state.display) {
       return (
@@ -126,10 +135,10 @@ class Commentz extends React.Component {
               <Subtitle data={data}/>
             </div>
           </div>
-          {data.replies && 
+          {data.replies &&
             <CommentsRoot
               {...props}
-              style={{paddingLeft: '1em'}} 
+              style={{paddingLeft: '1em'}}
               location={props.location}
               data={data.replies.data.children.map(line=>line.data)} />
           }
@@ -147,7 +156,7 @@ class Commentz extends React.Component {
 const Subtitle = ({data}) => (
   <div style={styles.subtitle}>
     {/* <span><NavLink style={styles.link} to={data.subreddit}>{data.subreddit_name_prefixed}</NavLink></span> */}
-    <span>{` | ${data.score} point`}</span>
+    <span>{`${data.score} points | ${data.author}`}</span>
   </div>
 )
 

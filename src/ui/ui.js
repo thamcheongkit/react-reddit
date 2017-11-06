@@ -5,7 +5,7 @@ import Transition from 'react-transition-group/Transition';
 import Comments from '../comments';
 
 // import styles from './ui.css';
-const DEFAULT_SUBREDDITS = ["r/popular","r/AskReddit","r/gameofthrones","r/The_Donald","r/politics","r/nba","r/pics","r/funny","r/videos","r/soccer","r/movies","r/worldnews","r/gifs","r/todayilearned","r/aww","r/gaming","r/asoiaf","r/news","r/BlackPeopleTwitter","r/SquaredCircle","r/GlobalOffensive","r/IAmA","r/Showerthoughts","r/marvelstudios","r/leagueoflegends","r/mildlyinteresting"];
+const DEFAULT_SUBREDDITS = ["/r/announcements/","/r/Art/","/r/AskReddit/","/r/askscience/","/r/aww/","/r/blog/","/r/books/","/r/creepy/","/r/dataisbeautiful/","/r/DIY/","/r/Documentaries/","/r/EarthPorn/","/r/explainlikeimfive/","/r/food/","/r/funny/","/r/Futurology/","/r/gadgets/","/r/gaming/","/r/GetMotivated/","/r/gifs/","/r/history/","/r/IAmA/","/r/InternetIsBeautiful/","/r/Jokes/","/r/LifeProTips/","/r/listentothis/","/r/mildlyinteresting/","/r/movies/","/r/Music/","/r/news/","/r/nosleep/","/r/nottheonion/","/r/OldSchoolCool/","/r/personalfinance/","/r/philosophy/","/r/photoshopbattles/","/r/pics/","/r/science/","/r/Showerthoughts/","/r/space/","/r/sports/","/r/television/","/r/tifu/","/r/todayilearned/","/r/UpliftingNews/","/r/videos/","/r/worldnews/"]
 
 const UI = (props) => (
   <div style={props.style}>
@@ -27,7 +27,7 @@ const UI = (props) => (
         )
       )}
       {props.data.length>0 &&
-        <Link style={styles.header} to={ `${props.location.pathname}?count=25&after=${props.data[props.data.length-1].name}` }>next</Link>
+        <Link style={styles.footer} to={ `${props.location.pathname}?count=25&after=${props.data[props.data.length-1].name}` }>next</Link>
       }
     </div>
   </div>
@@ -62,17 +62,25 @@ class Dropdown extends React.Component {
 
 const Subreddits = () => (
   <ul style={{listStyle: 'none', ...styles.header, padding: '0'}}>
-    {DEFAULT_SUBREDDITS.map(subreddit=>(<li key={subreddit}><Link to={'/'+subreddit}>{subreddit}</Link></li>))}
+    {DEFAULT_SUBREDDITS.map(subreddit=>(<li key={subreddit}><Link to={subreddit}>{subreddit}</Link></li>))}
   </ul>
 )
 
 const Selftext = ({data}) => {
   if (data.selftext) {
-    return (<div style={styles.subtitle}>{data.selftext}</div>)
+    return (<div className="selftext" style={styles.selftext}><div>{data.selftext}</div></div>)
   } else {
     return null
   }
 }
+
+// const Selftext2 = ({data}) => {
+//   if (data.selftext) {
+//     return (<div style={styles.selftext} dangerouslySetInnerHTML={{__html: markdown.toHTML(data.selftext)}}></div>)
+//   } else {
+//     return null
+//   }
+// }
 
 const Subtitle = ({data}) => (
   <div style={styles.subtitle}>
@@ -80,6 +88,7 @@ const Subtitle = ({data}) => (
     {/* <span>{` | ${data.num_comments} comments`}</span> */}
     <span> | <a style={styles.link} href={data.permalink}>{`${data.num_comments} comments`}</a></span>
     <span>{` | ${data.score} point`}</span>
+    <span>{` | ${data.author}`}</span>
     <Toggle
         style={{...styles.link, color: '#E53935'}}
         url={data.url}
@@ -145,13 +154,17 @@ const defaultStyle = {
 const transitionStyles = {
   exited: { opacity: 0, maxHeight: '0px', visibility: 'hidden' },
   exiting: { opacity: 0, maxHeight: '0px', visibility: 'hidden' },
-  entering: { opacity: 1, maxHeight: '800px', visibility: 'visible' },
+  entering: { opacity: 1, maxHeight: '2000px', visibility: 'visible' },
   // entered:  { opacity: 1, maxHeight: '1000px', visibility: 'visible' },
 };
 
 const styles = {
   header: {
     textAlign: 'center'
+  },
+  footer: {
+    textAlign: 'center',
+    marginBottom: '20em'
   },
   center: {
     margin: 'auto',
@@ -169,6 +182,13 @@ const styles = {
   },
   content: {
     display: 'inline'
+  },
+  selftext: {
+    color: '#666',
+    fontSize: '0.75em',
+    wordBreak: 'break-word',
+    maxHeight: '10em',
+    overflow: 'scroll',
   },
   subtitle: {
     color: '#666',
