@@ -3,13 +3,16 @@ import {Link, NavLink} from 'react-router-dom';
 import dropdown from './dropdown.svg';
 import Transition from 'react-transition-group/Transition';
 import Comments from '../comments';
+import { Route } from 'react-router-dom'
+
 
 // import styles from './ui.css';
 const DEFAULT_SUBREDDITS = ["/r/announcements/","/r/Art/","/r/AskReddit/","/r/askscience/","/r/aww/","/r/blog/","/r/books/","/r/creepy/","/r/dataisbeautiful/","/r/DIY/","/r/Documentaries/","/r/EarthPorn/","/r/explainlikeimfive/","/r/food/","/r/funny/","/r/Futurology/","/r/gadgets/","/r/gaming/","/r/GetMotivated/","/r/gifs/","/r/history/","/r/IAmA/","/r/InternetIsBeautiful/","/r/Jokes/","/r/LifeProTips/","/r/listentothis/","/r/mildlyinteresting/","/r/movies/","/r/Music/","/r/news/","/r/nosleep/","/r/nottheonion/","/r/OldSchoolCool/","/r/personalfinance/","/r/philosophy/","/r/photoshopbattles/","/r/pics/","/r/science/","/r/Showerthoughts/","/r/space/","/r/sports/","/r/television/","/r/tifu/","/r/todayilearned/","/r/UpliftingNews/","/r/videos/","/r/worldnews/"]
 
 const UI = (props) => (
   <div style={props.style}>
-    <h1 style={styles.header}>{props.location.pathname}</h1>
+    <Header pathname={props.location.pathname} />
+    {/* <h1 style={styles.header}>{props.location.pathname}</h1> */}
     <Dropdown>
       <Subreddits />
     </Dropdown>
@@ -32,6 +35,37 @@ const UI = (props) => (
     </div>
   </div>
 );
+
+class Header extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      activa: false,
+      value: ''
+    }
+    this.toggle = this.toggle.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    console.log(this.props)
+  }
+
+  toggle() {
+    this.setState({active: !this.state.active})
+  }
+
+  handleChange(event) {
+    this.setState({value: event.target.value});
+  }
+
+  render() {
+    return this.state.active
+      ? (<Route render={({ history}) => (
+          <form style={styles.header} onSubmit={(e)=>{e.preventDefault(); this.toggle(); this.setState({value: ''}); history.push(`/r/${this.state.value}`)}} >
+            <input autoFocus style={styles.headerInput} placeholder="Search subreddit..." type="text" value={this.state.value} onChange={this.handleChange} />
+          </form>
+        )} />)
+      : <h1 onClick={this.toggle} style={styles.header}>{this.props.pathname}</h1>
+  }
+}
 
 class Dropdown extends React.Component {
   constructor() {
@@ -142,7 +176,7 @@ class Toggle extends React.Component {
   }
 }
 
-const duration = 2000;
+const duration = 1000;
 
 const defaultStyle = {
   transition: `all ${duration}ms ease-in-out`,
@@ -160,11 +194,19 @@ const transitionStyles = {
 
 const styles = {
   header: {
-    textAlign: 'center'
+    textAlign: 'center',
+    marginTop: '0.67em',
+    marginBottom: '0.67em'
+  },
+  headerInput: {
+    fontSize: '2em',
+    textAlign: 'center',
+    fontWeight: 'bold',
+    border: 'none'
   },
   footer: {
     textAlign: 'center',
-    marginBottom: '20em'
+    marginBottom: '1em'
   },
   center: {
     margin: 'auto',
