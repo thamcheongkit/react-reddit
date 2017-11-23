@@ -103,18 +103,27 @@ class Header extends React.Component {
   }
 
   toggle() {
-    this.setState({active: !this.state.active})
+    this.setState({ active: !this.state.active })
   }
 
   handleChange(event) {
-    this.setState({value: event.target.value});
+    this.setState({ value: event.target.value });
   }
 
   render() {
     return this.state.active
       ? (<Route render={({ history}) => (
-          <form style={styles.header} onSubmit={(e)=>{e.preventDefault(); this.toggle(); this.setState({value: ''}); history.push(`/r/${this.state.value}`)}} >
-          <input autoFocus onBlur={() => this.setState(previousState => ({ active: !previousState.active }))} style={styles.headerInput} placeholder="Search subreddit..." type="text" value={this.state.value} onChange={e=>this.handleChange(e)} />
+          <form
+            style={styles.header}
+            onSubmit={(e) => { e.preventDefault(); history.push(`/r/${this.state.value}`); this.toggle(); this.setState({ value: '' }); }} >
+          <input
+            autoFocus
+            onBlur={() => this.setState(previousState => ({ active: !previousState.active }))}
+            style={styles.headerInput}
+            placeholder="Search subreddit..."
+            type="text"
+            value={this.state.value}
+            onChange={e=>this.handleChange(e)} />
           </form>
         )} />)
       : <h1 onClick={() => this.toggle()} style={styles.header}>{this.props.pathname}</h1>
@@ -122,9 +131,11 @@ class Header extends React.Component {
 }
 
 class Dropdown extends React.Component {
-  state = {active: false}
+  state = { active: false }
 
   render() {
+    console.log(this.props.onStateChanged)
+    const isActive = this.props
     return (
       <div onClick={() => this.setState(previousState => ({ active: !previousState.active }))}>
         <a href={"javascript:void(0);"}>
@@ -132,7 +143,10 @@ class Dropdown extends React.Component {
         </a>
         <Transition in={this.state.active}>
           {(state) => (
-            <div style={{...defaultStyle, ...transitionStyles[state]}}>{console.log(state)}{this.props.children}</div>
+            <div style={{...defaultStyle, ...transitionStyles[state]}}>
+              {console.log(state)}
+              {this.props.children}
+            </div>
           )}
         </Transition>
       </div>
@@ -167,10 +181,6 @@ class Subtitle extends React.Component {
   onImageButtonClick = () => this.setState(previousState => ({ hideImage: !previousState.hideImage }))
   onVideoButtonClick = () => this.setState(previousState => ({ hideVideo: !previousState.hideVideo }))
   onCommentButtonClick = () => this.setState(previousState => ({ hideComments: !previousState.hideComments }))
-
-  componentDidUpdate() {
-    console.log(this.state)
-  }
 
   render() {
     const { hideImage, hideVideo, hideComments } = this.state
@@ -254,29 +264,29 @@ class SubtitleComments extends React.Component {
   }
 }
 
-class Toggle extends React.Component {
-  state = {active: false};
+// class Toggle extends React.Component {
+//   state = {active: false};
 
-  toggle() {
-    this.setState({active: !this.state.active});
-  }
+//   toggle() {
+//     this.setState({active: !this.state.active});
+//   }
 
-  render() {
-    const { onChange } = this.props
-    const style = Object.assign({}, styles.link, this.props.style)
-    if (this.props.renderCondition) {
-      return(
-        <span>
-          <SubtitleSeperator />
-          <a style={style} href="javascript:void(0);" onClick={() => {this.toggle(); onChange()}}>{this.state.active ? this.props.hideText : this.props.showText}</a>
-          {this.state.active && this.props.children}
-        </span>
-      )
-    } else {
-      return null
-    }
-  }
-}
+//   render() {
+//     const { onChange } = this.props
+//     const style = Object.assign({}, styles.link, this.props.style)
+//     if (this.props.renderCondition) {
+//       return(
+//         <span>
+//           <SubtitleSeperator />
+//           <a style={style} href="javascript:void(0);" onClick={() => {this.toggle(); onChange()}}>{this.state.active ? this.props.hideText : this.props.showText}</a>
+//           {this.state.active && this.props.children}
+//         </span>
+//       )
+//     } else {
+//       return null
+//     }
+//   }
+// }
 
 const duration = 1000;
 
