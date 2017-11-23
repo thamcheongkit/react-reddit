@@ -3,6 +3,8 @@
 ##### Reddit viewer, without all the clutter
 
 ---
+![React Reddit Front snapshot](https://raw.githubusercontent.com/thamcheongkit/react-reddit/simple-ui/screenshots/frontpage.png)
+
 
 ### Features:
 * <100Kb to load
