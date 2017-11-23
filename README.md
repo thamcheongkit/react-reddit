@@ -7,7 +7,7 @@
 
 
 ### Features:
-* <100Kb to load
+* only **<100KB** on first load (1.4MB on official desktop site, 925KB on official mobile site)
 * responsive
 * inline comment section, never get lost again ;)
 * eliminate url tracking
