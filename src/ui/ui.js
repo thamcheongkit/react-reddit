@@ -7,37 +7,9 @@ import { Route } from 'react-router-dom'
 
 const DEFAULT_SUBREDDITS = ["/r/announcements/","/r/Art/","/r/AskReddit/","/r/askscience/","/r/aww/","/r/blog/","/r/books/","/r/creepy/","/r/dataisbeautiful/","/r/DIY/","/r/Documentaries/","/r/EarthPorn/","/r/explainlikeimfive/","/r/food/","/r/funny/","/r/Futurology/","/r/gadgets/","/r/gaming/","/r/GetMotivated/","/r/gifs/","/r/history/","/r/IAmA/","/r/InternetIsBeautiful/","/r/Jokes/","/r/LifeProTips/","/r/listentothis/","/r/mildlyinteresting/","/r/movies/","/r/Music/","/r/news/","/r/nosleep/","/r/nottheonion/","/r/OldSchoolCool/","/r/personalfinance/","/r/philosophy/","/r/photoshopbattles/","/r/pics/","/r/science/","/r/Showerthoughts/","/r/space/","/r/sports/","/r/television/","/r/tifu/","/r/todayilearned/","/r/UpliftingNews/","/r/videos/","/r/worldnews/"]
 
-// const UI = (props) => (
-//   <div>
-//     <Header pathname={props.location.pathname} />
-//     {/* <h1 style={styles.header}>{props.location.pathname}</h1> */}
-//     <Dropdown>
-//       <Subreddits />
-//     </Dropdown>
-//     <div style={styles.center} >
-//       {props.data.map(
-//         (data, i)=>(
-//           <article style={styles.row} key={data.name}>
-//             <span style={styles.numbering}>{i+1}</span>
-//             <div>
-//               <div>{data.title}</div>
-//               <Selftext data={data} />
-//               <Subtitle data={data} />
-//             </div>
-//           </article>
-//         )
-//       )}
-//     </div>
-//     {props.data.length > 0 &&
-//       <Link style={styles.footer} to={`${props.location.pathname}?count=25&after=${props.data[props.data.length - 1].name}`}>next</Link>
-//     }
-//   </div>
-// );
-
 const UI = (props) => (
   <div>
     <Header pathname={props.location.pathname} />
-    {/* <h1 style={styles.header}>{props.location.pathname}</h1> */}
     <Dropdown>
       <Subreddits />
     </Dropdown>
@@ -143,60 +115,165 @@ const Selftext = ({data}) => {
   }
 }
 
-// const Selftext2 = ({data}) => {
-//   if (data.selftext) {
-//     return (<div style={styles.selftext} dangerouslySetInnerHTML={{__html: markdown.toHTML(data.selftext)}}></div>)
-//   } else {
-//     return null
-//   }
-// }
-
-const Subtitle = ({data}) => (
-  <div style={styles.subtitle}>
-    <span><Link style={styles.link} to={data.subreddit}>{data.subreddit_name_prefixed}</Link></span>
-    {/* <span>{` | ${data.num_comments} comments`}</span> */}
-    <Seperator/>
-    <span><a style={styles.link} href={data.permalink}>{`${data.num_comments} comments`}</a></span>
-    <Seperator/>
-    <span>{`${data.score} point`}</span>
-    <Seperator/>
-    <span>{`${data.author}`}</span>
-    <Toggle
-        style={{color: '#E53935'}}
-        url={data.url}
-        hideText={'hide image'}
-        showText={'show image'}
-        renderCondition={data.url.endsWith('.jpg') || data.url.endsWith('.png')}>
-      <img src={data.url} alt="" />
-    </Toggle>
-    <Toggle
-        style={{ color: '#E53935' }}
-        url={data.url}
-        hideText={'hide gifv'}
-        showText={'show gifv'}
-        renderCondition={data.url.endsWith('.gifv')}>
-      <video autoPlay hideControls loop src={data.url.slice(0,-5)+'.mp4'} />
-    </Toggle>
-    <Seperator />
-    <span><a style={styles.link} href={data.url} target="_blank">link</a></span>
-    <Toggle
-        hideText={'hide comments'}
-        showText={'show comments'}
-        renderCondition={true}>
-      <Comments location={{pathname: data.permalink}} />
-    </Toggle>
-  </div>
-)
-
 const Seperator = () => (<span>{" | "}</span>)
+const SubtitleSeperator = Seperator
 
 class NewSubtitle extends React.Component {
+
+  state = {
+    hideImage: true,
+    hideVideo: true,
+    hideComments: true
+  }
+
+  onImageButtonClick = () => this.setState(previousState => ({ hideImage: !previousState.hideImage }))
+  onVideoButtonClick = () => this.setState(previousState => ({ hideVideo: !previousState.hideVideo }))
+  onCommentButtonClick = () => this.setState(previousState => ({ hideComments: !previousState.hideComments }))
+
+  componentDidUpdate() {
+    console.log(this.state)
+  }
+
   render() {
+    const { hideImage, hideVideo, hideComments } = this.state
+    const { data } = this.props
+    // passing all props to children
+    const children = React.Children.map(this.props.children, child => {
+      return React.cloneElement(child, {
+        onImageButtonClick: this.onImageButtonClick,
+        onVideoButtonClick: this.onVideoButtonClick,
+        onCommentButtonClick: this.onCommentButtonClick,
+        ...this.state
+      })
+    })
     return (
       <div style={styles.subtitle}>
-        {this.props.children}
+        {children}
+        <SubtitleImage hide={hideImage} src={data.url}/>
+        <SubtitleVideo hide={hideVideo} src={data.url}/>
+        <SubtitleComments hide={hideComments} src={data.permalink}/>
       </div>
     )
+  }
+
+}
+
+class SubtitleLink extends React.Component {
+  render() {
+    const { href, text } = this.props
+    return <span><Link style={styles.link} to={href}>{text}</Link></span>
+  }
+}
+
+class SubtitleButton extends React.Component {
+  render() {
+    const style = Object.assign({}, styles.link, this.props.style)
+    const { type, needRender, showText, hideText } = this.props
+
+    const hide = (type === 'image')
+      ? this.props.hideImage
+      : (type === 'video')
+        ? this.props.hideVideo
+        : this.props.hideComments
+
+    const onClick = (type === 'image')
+      ? this.props.onImageButtonClick
+      : (type === 'video')
+        ? this.props.onVideoButtonClick
+        : this.props.onCommentButtonClick
+
+    // switch (type) {
+    //   case 'image':
+    //     const hide = this.props.hideImage
+    //     const onClick = this.props.onImageButtonClick
+    //     break
+    //   case 'video':
+    //     const hide = this.props.hideVideo
+    //     const onClick = this.props.onVideoButtonClick
+    //     break
+    //   case 'comments':
+    //     const hide = this.props.hideComments
+    //     const onClick = this.props.onCommentButtonClick
+    //     break
+    // }
+
+    if (needRender) {
+      return (
+        <a style={style} href="javascript:void(0);" onClick={() => onClick()}>
+          {hide ? showText : hideText}
+        </a>
+      )
+    } else {
+      return null
+    }
+  }
+}
+
+class Subtitle extends React.Component {
+  render() {
+    const { data, location } = this.props
+    return (
+      <NewSubtitle data={data} location={location}>
+
+        <SubtitleLink href={data.subreddit} text={data.subreddit_name_prefixed} />
+        <SubtitleSeperator />
+
+        <span>{`${data.num_comments} comments`}</span>
+        <SubtitleSeperator />
+
+        <span>{data.author}</span>
+        <SubtitleSeperator />
+
+        <span>{`${data.score} points`}</span>
+        <SubtitleSeperator />
+
+        <SubtitleButton
+          style={{ color: '#E53935' }}
+          showText="show image"
+          hideText="hide image"
+          type="image"
+          needRender={data.url.endsWith('.jpg') || data.url.endsWith('.png')}
+        />
+        <SubtitleSeperator/>
+
+        <SubtitleButton
+          style={{ color: '#FFA500' }}
+          showText="show gifv"
+          hideText="hide gifv"
+          type="video"
+          needRender={data.url.endsWith('.gifv')}
+        />
+        <SubtitleSeperator />
+
+        <SubtitleButton
+          showText="show comment"
+          hideText="hide comment"
+          type="comments"
+          needRender={true}
+        />
+      </NewSubtitle>
+    )
+  }
+}
+
+class SubtitleImage extends React.Component {
+  render() {
+    const { hide, src } = this.props
+    return hide ? null : (<img src={src}/>)
+  }
+}
+
+class SubtitleVideo extends React.Component {
+  render() {
+    const { hide, src } = this.props
+    return hide ? null : <video autoPlay hideControls loop src={src.slice(0, -5) + '.mp4'} />
+  }
+}
+
+class SubtitleComments extends React.Component {
+  render() {
+    const { hide, src } = this.props
+    return hide ? null : <Comments location={{ pathname: src }} />
   }
 }
 
@@ -208,12 +285,13 @@ class Toggle extends React.Component {
   }
 
   render() {
+    const { onChange } = this.props
     const style = Object.assign({}, styles.link, this.props.style)
     if (this.props.renderCondition) {
       return(
         <span>
           <Seperator />
-          <a style={style} href="javascript:void(0);" onClick={() => this.toggle()}>{this.state.active ? this.props.hideText : this.props.showText}</a>
+          <a style={style} href="javascript:void(0);" onClick={() => {this.toggle(); onChange()}}>{this.state.active ? this.props.hideText : this.props.showText}</a>
           {this.state.active && this.props.children}
         </span>
       )
