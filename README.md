@@ -1,5 +1,15 @@
 # React Reddit
 
-A reddit viewer client written with React
+##### Reddit viewer, without all the clutter
 
-[Demo](https://thamcheongkit.github.io)
+---
+
+### Features:
+* <100Kb to load
+* responsive
+* inline comment section, never get lost again ;)
+* eliminate url tracking
+
+
+### Demo:
+* [Click here!](https://thamcheongkit.github.io)
