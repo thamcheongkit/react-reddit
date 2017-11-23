@@ -52,7 +52,7 @@ class Posts extends React.Component {
     return (
       <div style={styles.center}>
         {posts.map((data, i) => (
-          <Post data={data} i={i} />
+          <Post data={data} i={i} key={data.name} />
         ))}
       </div>
     )
@@ -63,7 +63,7 @@ class Post extends React.Component {
   render() {
     const { data, i } = this.props
     return (
-      <article style={styles.row} key={data.name}>
+      <article style={styles.row}>
         <span style={styles.numbering}>{i}</span>
         <div>
           <div>{data.title}</div>
@@ -90,8 +90,6 @@ class Header extends React.Component {
     active: false,
     value: ''
   }
-  toggle = this.toggle.bind(this);
-  handleChange = this.handleChange.bind(this);
 
   toggle() {
     this.setState({active: !this.state.active})
@@ -105,20 +103,15 @@ class Header extends React.Component {
     return this.state.active
       ? (<Route render={({ history}) => (
           <form style={styles.header} onSubmit={(e)=>{e.preventDefault(); this.toggle(); this.setState({value: ''}); history.push(`/r/${this.state.value}`)}} >
-            <input autoFocus style={styles.headerInput} placeholder="Search subreddit..." type="text" value={this.state.value} onChange={this.handleChange} />
+            <input autoFocus style={styles.headerInput} placeholder="Search subreddit..." type="text" value={this.state.value} onChange={e=>this.handleChange(e)} />
           </form>
         )} />)
-      : <h1 onClick={this.toggle} style={styles.header}>{this.props.pathname}</h1>
+      : <h1 onClick={() => this.toggle()} style={styles.header}>{this.props.pathname}</h1>
   }
 }
 
 class Dropdown extends React.Component {
   state = {active: false}
-  // toggle = this.toggle.bind(this);
-
-  // toggle() {
-  //   this.setState(previousState => ({active: !previousState.active}))
-  // }
 
   render() {
     return (
@@ -162,11 +155,14 @@ const Subtitle = ({data}) => (
   <div style={styles.subtitle}>
     <span><Link style={styles.link} to={data.subreddit}>{data.subreddit_name_prefixed}</Link></span>
     {/* <span>{` | ${data.num_comments} comments`}</span> */}
-    <span> | <a style={styles.link} href={data.permalink}>{`${data.num_comments} comments`}</a></span>
-    <span>{` | ${data.score} point`}</span>
-    <span>{` | ${data.author}`}</span>
+    <Seperator/>
+    <span><a style={styles.link} href={data.permalink}>{`${data.num_comments} comments`}</a></span>
+    <Seperator/>
+    <span>{`${data.score} point`}</span>
+    <Seperator/>
+    <span>{`${data.author}`}</span>
     <Toggle
-        style={{...styles.link, color: '#E53935'}}
+        style={{color: '#E53935'}}
         url={data.url}
         hideText={'hide image'}
         showText={'show image'}
@@ -174,16 +170,16 @@ const Subtitle = ({data}) => (
       <img src={data.url} alt="" />
     </Toggle>
     <Toggle
-        style={{...styles.link, color: '#E53935'}}
+        style={{ color: '#E53935' }}
         url={data.url}
         hideText={'hide gifv'}
         showText={'show gifv'}
         renderCondition={data.url.endsWith('.gifv')}>
       <video autoPlay hideControls loop src={data.url.slice(0,-5)+'.mp4'} />
     </Toggle>
-    <span> | <a style={styles.link} href={data.url} target="_blank">link</a></span>
+    <Seperator />
+    <span><a style={styles.link} href={data.url} target="_blank">link</a></span>
     <Toggle
-        style={styles.link}
         hideText={'hide comments'}
         showText={'show comments'}
         renderCondition={true}>
@@ -192,23 +188,32 @@ const Subtitle = ({data}) => (
   </div>
 )
 
-class Toggle extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {active: false};
-    this.toggle = this.toggle.bind(this);
+const Seperator = () => (<span>{" | "}</span>)
+
+class NewSubtitle extends React.Component {
+  render() {
+    return (
+      <div style={styles.subtitle}>
+        {this.props.children}
+      </div>
+    )
   }
+}
+
+class Toggle extends React.Component {
+  state = {active: false};
 
   toggle() {
     this.setState({active: !this.state.active});
   }
 
   render() {
+    const style = Object.assign({}, styles.link, this.props.style)
     if (this.props.renderCondition) {
       return(
         <span>
-          <span> | </span>
-          <a style={this.props.style} href="javascript:void(0);" onClick={this.toggle}>{this.state.active ? this.props.hideText : this.props.showText}</a>
+          <Seperator />
+          <a style={style} href="javascript:void(0);" onClick={() => this.toggle()}>{this.state.active ? this.props.hideText : this.props.showText}</a>
           {this.state.active && this.props.children}
         </span>
       )
