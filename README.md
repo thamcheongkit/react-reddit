@@ -8,6 +8,7 @@
 
 ### Features:
 * only **<100KB** on first load (1.4MB on official desktop site, 925KB on official mobile site)
+* benchmarked with [Google lighthouse](https://developers.google.com/web/tools/lighthouse/) and scores 90+
 * responsive
 * inline comment section, never get lost again ;)
 * eliminate url tracking
