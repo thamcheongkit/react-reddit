@@ -24,7 +24,7 @@ class Posts extends React.Component {
     return (
       <div style={styles.center}>
         {posts.map((data, i) => (
-          <Post data={data} i={i} key={data.name} />
+          <Post data={data} i={i+1} key={data.name} />
         ))}
       </div>
     )
@@ -40,12 +40,51 @@ class Post extends React.Component {
         <div>
           <div>{data.title}</div>
           <Selftext data={data} />
-          <Subtitle data={data} />
+          <MySubtitle data={data} />
         </div>
       </article>
     )
   }
 }
+
+const MySubtitle = ({ data }) => (
+  <Subtitle data={data} location={location}>
+
+    <SubtitleLink href={data.subreddit} text={data.subreddit_name_prefixed} />
+    <SubtitleSeperator />
+
+    <span>{data.author}</span>
+    <SubtitleSeperator />
+
+    <span>{`${data.score} points`}</span>
+    <SubtitleSeperator />
+
+    <span><a target="_blank" style={styles.link} href={data.url}>link</a></span>
+
+    <SubtitleButton
+      style={{ color: '#E53935' }}
+      showText="show image"
+      hideText="hide image"
+      type="image"
+      needRender={data.url.endsWith('.jpg') || data.url.endsWith('.png')}
+    />
+
+    <SubtitleButton
+      style={{ color: '#FFA500' }}
+      showText="show gifv"
+      hideText="hide gifv"
+      type="video"
+      needRender={data.url.endsWith('.gifv')}
+    />
+
+    <SubtitleButton
+      showText={`show ${data.num_comments} comments`}
+      hideText="hide comment"
+      type="comments"
+      needRender={true}
+    />
+  </Subtitle>
+)
 
 class NextPage extends React.Component {
   render() {
@@ -75,7 +114,7 @@ class Header extends React.Component {
     return this.state.active
       ? (<Route render={({ history}) => (
           <form style={styles.header} onSubmit={(e)=>{e.preventDefault(); this.toggle(); this.setState({value: ''}); history.push(`/r/${this.state.value}`)}} >
-            <input autoFocus style={styles.headerInput} placeholder="Search subreddit..." type="text" value={this.state.value} onChange={e=>this.handleChange(e)} />
+          <input autoFocus onBlur={() => this.setState(previousState => ({ active: !previousState.active }))} style={styles.headerInput} placeholder="Search subreddit..." type="text" value={this.state.value} onChange={e=>this.handleChange(e)} />
           </form>
         )} />)
       : <h1 onClick={() => this.toggle()} style={styles.header}>{this.props.pathname}</h1>
@@ -115,10 +154,9 @@ const Selftext = ({data}) => {
   }
 }
 
-const Seperator = () => (<span>{" | "}</span>)
-const SubtitleSeperator = Seperator
+const SubtitleSeperator = () => (<span>{" | "}</span>)
 
-class NewSubtitle extends React.Component {
+class Subtitle extends React.Component {
 
   state = {
     hideImage: true,
@@ -182,77 +220,16 @@ class SubtitleButton extends React.Component {
         ? this.props.onVideoButtonClick
         : this.props.onCommentButtonClick
 
-    // switch (type) {
-    //   case 'image':
-    //     const hide = this.props.hideImage
-    //     const onClick = this.props.onImageButtonClick
-    //     break
-    //   case 'video':
-    //     const hide = this.props.hideVideo
-    //     const onClick = this.props.onVideoButtonClick
-    //     break
-    //   case 'comments':
-    //     const hide = this.props.hideComments
-    //     const onClick = this.props.onCommentButtonClick
-    //     break
-    // }
-
-    if (needRender) {
-      return (
-        <a style={style} href="javascript:void(0);" onClick={() => onClick()}>
-          {hide ? showText : hideText}
-        </a>
+    return needRender
+      ? (
+        <span>
+          <SubtitleSeperator />
+          <a style={style} href="javascript:void(0);" onClick={() => onClick()}>
+            {hide ? showText : hideText}
+          </a>
+        </span>
       )
-    } else {
-      return null
-    }
-  }
-}
-
-class Subtitle extends React.Component {
-  render() {
-    const { data, location } = this.props
-    return (
-      <NewSubtitle data={data} location={location}>
-
-        <SubtitleLink href={data.subreddit} text={data.subreddit_name_prefixed} />
-        <SubtitleSeperator />
-
-        <span>{`${data.num_comments} comments`}</span>
-        <SubtitleSeperator />
-
-        <span>{data.author}</span>
-        <SubtitleSeperator />
-
-        <span>{`${data.score} points`}</span>
-        <SubtitleSeperator />
-
-        <SubtitleButton
-          style={{ color: '#E53935' }}
-          showText="show image"
-          hideText="hide image"
-          type="image"
-          needRender={data.url.endsWith('.jpg') || data.url.endsWith('.png')}
-        />
-        <SubtitleSeperator/>
-
-        <SubtitleButton
-          style={{ color: '#FFA500' }}
-          showText="show gifv"
-          hideText="hide gifv"
-          type="video"
-          needRender={data.url.endsWith('.gifv')}
-        />
-        <SubtitleSeperator />
-
-        <SubtitleButton
-          showText="show comment"
-          hideText="hide comment"
-          type="comments"
-          needRender={true}
-        />
-      </NewSubtitle>
-    )
+      : null
   }
 }
 
@@ -290,7 +267,7 @@ class Toggle extends React.Component {
     if (this.props.renderCondition) {
       return(
         <span>
-          <Seperator />
+          <SubtitleSeperator />
           <a style={style} href="javascript:void(0);" onClick={() => {this.toggle(); onChange()}}>{this.state.active ? this.props.hideText : this.props.showText}</a>
           {this.state.active && this.props.children}
         </span>
