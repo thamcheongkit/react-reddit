@@ -10,9 +10,9 @@ export default class App extends React.Component {
     );
   }
 
-  componentWillUpdate(nextProps) {
-    if (this.props.location.pathname !== nextProps.location.pathname ||
-        this.props.location.search !== nextProps.location.search) {
+  componentDidUpdate(previousProps) {
+    if (this.props.location.pathname !== previousProps.location.pathname ||
+      this.props.location.search !== previousProps.location.search) {
       redditApi.get(this.props.location, data=>this.setState({data: data})
       );
     }
