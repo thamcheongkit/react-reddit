@@ -1,9 +1,9 @@
 # React Reddit
 
-##### Reddit viewer, without all the clutter
+##### Reddit viewer... without all the clutter
 
 ---
-![React Reddit Front snapshot](https://raw.githubusercontent.com/thamcheongkit/react-reddit/simple-ui/screenshots/frontpage.png)
+[![React Reddit Front snapshot](https://raw.githubusercontent.com/thamcheongkit/react-reddit/simple-ui/screenshots/frontpage.png)](https://thamcheongkit.github.io)
 
 
 ### Features:
@@ -14,4 +14,4 @@
 
 
 ### Demo:
-* [Click here!](https://thamcheongkit.github.io)
+* [Click here!](https://thamcheongkit.github.io), or click on the screenshot above
