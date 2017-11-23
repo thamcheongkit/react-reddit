@@ -6,7 +6,7 @@ import App from './App';
 import Comments from './comments';
 import ColumnView from './ColumnView';
 import './index.css';
-import registerServiceWorker from './registerServiceWorker';
+// import registerServiceWorker from './registerServiceWorker';
 
 // CK: reddit router
 render(
@@ -23,4 +23,4 @@ render(
   document.getElementById('root')
 );
 
-registerServiceWorker();
+// registerServiceWorker();

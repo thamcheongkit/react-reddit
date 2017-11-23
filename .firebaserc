@@ -1,5 +1,16 @@
 {
   "projects": {
     "default": "react-reddit-a7741"
-  }
+  },
+  "headers": [
+    {
+      "source": "**/*.@(js)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "max-age=7200"
+        }
+      ]
+    }
+  ]
 }

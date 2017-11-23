@@ -1,6 +1,6 @@
 import React from 'react';
 import {Link, NavLink} from 'react-router-dom';
-import dropdown from './dropdown.svg';
+import dropdown from './DropDownIcon.svg';
 import Transition from 'react-transition-group/Transition';
 import Comments from '../comments';
 import { Route } from 'react-router-dom'
@@ -10,7 +10,7 @@ import { Route } from 'react-router-dom'
 const DEFAULT_SUBREDDITS = ["/r/announcements/","/r/Art/","/r/AskReddit/","/r/askscience/","/r/aww/","/r/blog/","/r/books/","/r/creepy/","/r/dataisbeautiful/","/r/DIY/","/r/Documentaries/","/r/EarthPorn/","/r/explainlikeimfive/","/r/food/","/r/funny/","/r/Futurology/","/r/gadgets/","/r/gaming/","/r/GetMotivated/","/r/gifs/","/r/history/","/r/IAmA/","/r/InternetIsBeautiful/","/r/Jokes/","/r/LifeProTips/","/r/listentothis/","/r/mildlyinteresting/","/r/movies/","/r/Music/","/r/news/","/r/nosleep/","/r/nottheonion/","/r/OldSchoolCool/","/r/personalfinance/","/r/philosophy/","/r/photoshopbattles/","/r/pics/","/r/science/","/r/Showerthoughts/","/r/space/","/r/sports/","/r/television/","/r/tifu/","/r/todayilearned/","/r/UpliftingNews/","/r/videos/","/r/worldnews/"]
 
 const UI = (props) => (
-  <div style={props.style}>
+  <div>
     <Header pathname={props.location.pathname} />
     {/* <h1 style={styles.header}>{props.location.pathname}</h1> */}
     <Dropdown>
@@ -36,17 +36,25 @@ const UI = (props) => (
   </div>
 );
 
+// class UI2 extends React.Component {
+//   render() {
+//     const { location } = this.props
+//     const children = React.map(this.props.children, child=>React.cloneElement(child, this.props))
+//     return (
+//       <div>
+//         {children}
+//       </div>
+//     )
+//   }
+// }
+
 class Header extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      activa: false,
-      value: ''
-    }
-    this.toggle = this.toggle.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    console.log(this.props)
+  state = {
+    active: false,
+    value: ''
   }
+  toggle = this.toggle.bind(this);
+  handleChange = this.handleChange.bind(this);
 
   toggle() {
     this.setState({active: !this.state.active})
@@ -68,19 +76,16 @@ class Header extends React.Component {
 }
 
 class Dropdown extends React.Component {
-  constructor() {
-    super();
-    this.state = {active: false}
-    this.toggle = this.toggle.bind(this);
-  }
+  state = {active: false}
+  // toggle = this.toggle.bind(this);
 
-  toggle() {
-    this.setState({active: !this.state.active})
-  }
+  // toggle() {
+  //   this.setState(previousState => ({active: !previousState.active}))
+  // }
 
   render() {
     return (
-      <div onClick={this.toggle}>
+      <div onClick={() => this.setState(previousState => ({ active: !previousState.active }))}>
         <a href={"javascript:void(0);"}>
           <img src={dropdown} style={{textAlign: 'center', height: '0.5em'}}/>
         </a>

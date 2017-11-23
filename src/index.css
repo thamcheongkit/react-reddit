@@ -1,12 +1,9 @@
 body {
   margin: 0;
   padding: 0;
-
-  /*CK: roboto*/
   font-family: 'Roboto', sans-serif;
 }
 
-/*CK: fix a href overflow*/
 a {
   display: block;
   text-overflow: ellipsis;

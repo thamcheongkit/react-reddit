@@ -1,20 +1,17 @@
 import React from 'react';
 import {Link, NavLink} from 'react-router-dom';
 // import RedditAPI from './reddit_api';
-import RedditAPI2 from './redditAPI2';
+import redditApi from './redditApi';
 
 // import RedditUIRoot from './RedditUI';
 
-const NodeCache = require( "node-cache" );
-const cache = new NodeCache();
+// const NodeCache = require( "node-cache" );
+// const cache = new NodeCache();
 
 // var cache = require('memory-cache');
 
 export default class Comments extends React.Component {
-  constructor() {
-    super();
-    this.state = {data: []}
-  }
+  state = {data: []}
 
   componentDidMount() {
     // RedditAPI.fetchRedditCommentsJson(
@@ -23,7 +20,7 @@ export default class Comments extends React.Component {
     //   this.props.location.search
     // );
 
-    RedditAPI2.getComment(
+    redditApi.getComment(
       {
         pathname: this.props.location.pathname,
         search: this.props.location.search
@@ -34,7 +31,7 @@ export default class Comments extends React.Component {
   componentDidUpdate(nextProps) {
     if (this.props.location.pathname !== nextProps.location.pathname ||
         this.props.location.search !== nextProps.location.search) {
-      RedditAPI2.getComment(
+      redditApi.getComment(
         {
           pathname: this.props.location.pathname,
           search: this.props.location.search
@@ -111,11 +108,8 @@ const CommentsRoot = (props) => (
 );
 
 class Commentz extends React.Component {
-  constructor() {
-    super();
-    this.state = {display: true};
-    this.toggle = this.toggle.bind(this);
-  }
+  state = {display: true};
+  toggle = this.toggle.bind(this);
 
   toggle() {
     this.setState({display: !this.state.display})
@@ -161,11 +155,9 @@ const Subtitle = ({data}) => (
 )
 
 class Toggle extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {active: false};
-    this.toggle = this.toggle.bind(this);
-  }
+
+  state = {active: false};
+  toggle = this.toggle.bind(this);
 
   toggle() {
     this.setState({active: !this.state.active});
