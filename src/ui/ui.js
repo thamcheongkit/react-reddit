@@ -5,9 +5,34 @@ import Transition from 'react-transition-group/Transition';
 import Comments from '../comments';
 import { Route } from 'react-router-dom'
 
-
-// import styles from './ui.css';
 const DEFAULT_SUBREDDITS = ["/r/announcements/","/r/Art/","/r/AskReddit/","/r/askscience/","/r/aww/","/r/blog/","/r/books/","/r/creepy/","/r/dataisbeautiful/","/r/DIY/","/r/Documentaries/","/r/EarthPorn/","/r/explainlikeimfive/","/r/food/","/r/funny/","/r/Futurology/","/r/gadgets/","/r/gaming/","/r/GetMotivated/","/r/gifs/","/r/history/","/r/IAmA/","/r/InternetIsBeautiful/","/r/Jokes/","/r/LifeProTips/","/r/listentothis/","/r/mildlyinteresting/","/r/movies/","/r/Music/","/r/news/","/r/nosleep/","/r/nottheonion/","/r/OldSchoolCool/","/r/personalfinance/","/r/philosophy/","/r/photoshopbattles/","/r/pics/","/r/science/","/r/Showerthoughts/","/r/space/","/r/sports/","/r/television/","/r/tifu/","/r/todayilearned/","/r/UpliftingNews/","/r/videos/","/r/worldnews/"]
+
+// const UI = (props) => (
+//   <div>
+//     <Header pathname={props.location.pathname} />
+//     {/* <h1 style={styles.header}>{props.location.pathname}</h1> */}
+//     <Dropdown>
+//       <Subreddits />
+//     </Dropdown>
+//     <div style={styles.center} >
+//       {props.data.map(
+//         (data, i)=>(
+//           <article style={styles.row} key={data.name}>
+//             <span style={styles.numbering}>{i+1}</span>
+//             <div>
+//               <div>{data.title}</div>
+//               <Selftext data={data} />
+//               <Subtitle data={data} />
+//             </div>
+//           </article>
+//         )
+//       )}
+//     </div>
+//     {props.data.length > 0 &&
+//       <Link style={styles.footer} to={`${props.location.pathname}?count=25&after=${props.data[props.data.length - 1].name}`}>next</Link>
+//     }
+//   </div>
+// );
 
 const UI = (props) => (
   <div>
@@ -16,37 +41,49 @@ const UI = (props) => (
     <Dropdown>
       <Subreddits />
     </Dropdown>
-    <div style={styles.center} >
-      {props.data.map(
-        (data, i)=>(
-          <article style={styles.row} key={data.name}>
-            <span style={styles.numbering}>{i+1}</span>
-            <div>
-              <div>{data.title}</div>
-              <Selftext data={data} />
-              <Subtitle data={data} />
-            </div>
-          </article>
-        )
-      )}
-      {props.data.length>0 &&
-        <Link style={styles.footer} to={ `${props.location.pathname}?count=25&after=${props.data[props.data.length-1].name}` }>next</Link>
-      }
-    </div>
+    <Posts data={props.data} />
+    <NextPage {...props} />
   </div>
 );
 
-// class UI2 extends React.Component {
-//   render() {
-//     const { location } = this.props
-//     const children = React.map(this.props.children, child=>React.cloneElement(child, this.props))
-//     return (
-//       <div>
-//         {children}
-//       </div>
-//     )
-//   }
-// }
+class Posts extends React.Component {
+  render() {
+    const { data: posts } = this.props
+    return (
+      <div style={styles.center}>
+        {posts.map((data, i) => (
+          <Post data={data} i={i} />
+        ))}
+      </div>
+    )
+  }
+}
+
+class Post extends React.Component {
+  render() {
+    const { data, i } = this.props
+    return (
+      <article style={styles.row} key={data.name}>
+        <span style={styles.numbering}>{i}</span>
+        <div>
+          <div>{data.title}</div>
+          <Selftext data={data} />
+          <Subtitle data={data} />
+        </div>
+      </article>
+    )
+  }
+}
+
+class NextPage extends React.Component {
+  render() {
+    const { data, location } = this.props
+    return (
+      data.length > 0 &&
+        (<Link style={styles.footer} to={`${location.pathname}?count=25&after=${data[data.length - 1].name}`}>next</Link>)
+    )
+  }
+}
 
 class Header extends React.Component {
   state = {
