@@ -133,6 +133,10 @@ class Header extends React.Component {
 class Dropdown extends React.Component {
   state = { active: false }
 
+  componentWillReceiveProps(nextProps) {
+    this.setState({ active: false })
+  }
+
   render() {
     console.log(this.props.onStateChanged)
     const isActive = this.props
