@@ -11,7 +11,10 @@ import redditApi from './redditApi';
 // var cache = require('memory-cache');
 
 export default class Comments extends React.Component {
-  state = {data: []}
+  state = {
+    data: [],
+    loading: true
+  }
 
   componentDidMount() {
     // RedditAPI.fetchRedditCommentsJson(
@@ -24,24 +27,29 @@ export default class Comments extends React.Component {
       {
         pathname: this.props.location.pathname,
         search: this.props.location.search
-      }, data => this.setState({data: data}),
+      }, data => this.setState({data: data, loading: false}),
     );
   }
 
   componentDidUpdate(nextProps) {
     if (this.props.location.pathname !== nextProps.location.pathname ||
         this.props.location.search !== nextProps.location.search) {
+          this.setState({ loading: true })
       redditApi.getComment(
         {
           pathname: this.props.location.pathname,
           search: this.props.location.search
-        }, data => this.setState({data: data}),
+        }, data => this.setState({data: data, loading: false}),
       );
     }
   }
 
   render() {
-    return (<CommentsRoot {...this.props} {...this.state} />)
+    const { loading } = this.state
+    return loading
+      ? (<span className="spinner"></span>)
+      : (<CommentsRoot {...this.props} {...this.state} />)
+    
   }
 }
 
