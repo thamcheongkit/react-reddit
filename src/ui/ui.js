@@ -13,21 +13,23 @@ const UI = (props) => (
     <Dropdown>
       <Subreddits />
     </Dropdown>
-    <Posts data={props.data} />
+    <Posts data={props.data} {...props} />
     <NextPage {...props} />
   </div>
 );
 
 class Posts extends React.Component {
   render() {
-    const { data: posts } = this.props
-    return (
-      <div style={styles.center}>
-        {posts.map((data, i) => (
-          <Post data={data} i={i+1} key={data.name} />
-        ))}
-      </div>
-    )
+    const { data: posts, loading } = this.props
+    return loading
+      ? <span className="spinner"></span>
+      : (
+        <div style={styles.center}>
+          {posts.map((data, i) => (
+            <Post data={data} i={i+1} key={data.name} />
+          ))}
+        </div>
+      )
   }
 }
 

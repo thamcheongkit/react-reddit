@@ -4,17 +4,19 @@ import redditApi from './redditApi';
 
 export default class App extends React.Component {
   state = {
-    data: []
+    data: [],
+    loading: true
   }
 
   componentDidMount() {
-    redditApi.get(this.props.location, data=>this.setState({ data: data }));
+    redditApi.get(this.props.location, data=>this.setState({ data: data, loading: false }));
   }
 
   componentDidUpdate(previousProps) {
     if (this.props.location.pathname !== previousProps.location.pathname ||
       this.props.location.search !== previousProps.location.search) {
-      redditApi.get(this.props.location, data=>this.setState({ data: data }));
+      this.setState({ loading: true })
+      redditApi.get(this.props.location, data=>this.setState({ data: data, loading: false }));
     }
   }
 
