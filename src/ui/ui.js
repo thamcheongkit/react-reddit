@@ -119,6 +119,8 @@ class Header extends React.Component {
             style={styles.header}
             onSubmit={(e) => { e.preventDefault(); history.push(`/r/${this.state.value}`); this.toggle(); this.setState({ value: '' }); }} >
           <input
+            autoCapitalize="none"
+            autoCorrect="off"
             autoFocus
             onBlur={() => this.setState(previousState => ({ active: !previousState.active }))}
             style={styles.headerInput}
