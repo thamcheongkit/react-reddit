@@ -11,9 +11,15 @@ a {
   overflow: hidden;
 }
 
-video, img {
+.react-reddit video, .react-reddit img {
   width: 100%;
   height: 100%;
+}
+
+@media only screen and (orientation: portrait) {
+    img {
+        width: 5em;
+    }
 }
 
 input:focus {
@@ -23,7 +29,7 @@ input:focus {
 @keyframes spinner {
   to {transform: rotate(360deg);}
 }
- 
+
 .spinner:before {
   content: '';
   box-sizing: border-box;
